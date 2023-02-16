@@ -81,9 +81,9 @@ def delete():
                         else:
                             ifdel = True
                     if ifdel:
-                        print("ID Student %s is deleted", studentId)
+                        print("ID Student {} is deleted".format(studentId))
                     else:
-                        print("ID Student %s is not found", studentId)
+                        print("ID Student {} is not found".format(studentId))
             else:
                 print("No student information reocorded")
                 break
@@ -107,7 +107,7 @@ def modify():
         for student in student_old:
             d = dict(eval(student))
             if d["id"] == studentId:
-                print("ID Student %s found", studentId)
+                print("ID Student {} found".format(studentId))
                 while True:
                     try:
                         d["name"] = input("Enter name: ")
@@ -198,7 +198,7 @@ def total():
         with open(filename, 'r') as rfile:
                 student_old= rfile.readlines()
         if student_old:
-            print("Total %d Student Recorded", len(student_old))
+            print("Total {} Student Recorded".format(len(student_old)))
         else:
             print("No Student Information is Stored!")
     else:
