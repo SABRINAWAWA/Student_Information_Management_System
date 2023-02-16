@@ -30,7 +30,7 @@ def save(student):
     students_txt.close()
 
 
-def insert(student):
+def insert():
     studentList = []
     mark = True
     while mark:
@@ -64,7 +64,7 @@ def delete():
     mark = True
     while mark:
         studentId = input("Enter ID of student you want to delete: ")
-        if studentId is not "":
+        if studentId != "":
             if os.path.exists(filename):
                 with open(filename, 'r') as rfile:
                     student_old = rfile.readlines()
@@ -104,9 +104,8 @@ def modify():
         return
     studentId = input("Enter ID of student you want to modify: ")
     with open(filename, 'w') as wfile:
-        d = {}
-        for list in student_old:
-            d = dict(eval(list))
+        for student in student_old:
+            d = dict(eval(student))
             if d["id"] == studentId:
                 print("ID Student %s found", studentId)
                 while True:
@@ -134,14 +133,14 @@ def show_student(studentList):
         print("No Student Information Found!")
         return
     else:
-        format_title="{:^6}{:^12}\t{:^10}\t{:^10}\t{:^10}\t{:^10}\t{:^10}\t{:^10}"
+        format_title="{:^6}{:^12}\t{:^10}\t{:^10}\t{:^10}\t{:^10}\t{:^10}"
         print(format_title.format("ID", "Name", "English", "Math", "History", "Art", "Total Grade"))
         
-        format_data="{:^6}{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}"
+        format_data="{:^6}{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}"
         for info in studentList:
             print(format_data.format(info.get("id"), info.get("name"), info.get("english"), info.get("math"),
             info.get("history"), info.get("art"), 
-            (info.get("english")+info.get("math")+info.get("history")+info.get("art")).center(12)))
+            str(info.get("english")+info.get("math")+info.get("history")+info.get("art")).center(12)))
 
 def search():
     mark = True
@@ -152,16 +151,16 @@ def search():
         if os.path.exists(filename):
             mode=int(input("Enter 1 for searching based on name, enter 2 for search based on ID: "))
             if mode==1:
-                id=input("Enter Student Name: ")
+                name=input("Enter Student Name: ")
             elif mode==2:
-                name=input("Enter Student ID: ")
+                id=input("Enter Student ID: ")
             else:
                 print("Error input, please enter again!")
-            
+
             with open(filename, 'r') as rfile:
                 students= rfile.readlines()
-                for list in students:
-                    d = dict(eval(list))
+                for list1 in students:
+                    d = dict(eval(list1))
                     if mode==1:
                         if d["name"]==name:
                             student_query.append(d)
@@ -183,11 +182,14 @@ def show():
     student_new=[]
     if os.path.exists(filename):
         with open(filename, 'r') as rfile:
-                student_old= rfile.readlines()
+            student_old= rfile.readlines()
         for list1 in student_old:
-            student_new.append(eval(list1))
+            d = dict(eval(list1))
+            student_new.append(d)
         if student_new:
             show_student(student_new)
+        else:
+            print("No Student Information is Stored!")
     else:
         print("No Student Information is Stored!")
 
@@ -253,6 +255,7 @@ def main():
             if option_int == 0:
                 print("You existed the Student Information Management Sytem! ")
                 ctrl = False
+                break
             elif option_int == 1:
                 insert()
             elif option_int == 2:
@@ -267,3 +270,8 @@ def main():
                 total()
             elif option_int == 7:
                 show()
+        else:
+            print("Invalid input, please enter again!")
+            main()
+
+main()
